@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ozone level Predictor</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Ozone level Predictor">
+  <meta name="author" content="JP Bournas">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Ozone level Predictor</h1>
+    <h2></h2>
+    <p>JP Bournas<br/>Data Science course</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Ozone level Predictor</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>This document is aiming at presenting the shiny application Ozone Predictor. The following aspects will be covered:</p>
+
+<p>1- Application purpose and user guidelines</p>
+
+<p>2- Calculation applied</p>
+
+<p>3- Displayed result</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-2" style="background:;">
+  <hgroup>
+    <h2>1 - Application purpose and user guidelines</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>This appplication can be used to estimate the potential level of ozone according to a selected temperature. </p>
+
+<p>To calculate this estimate the application uses the air quality dataset as a reference to establish the regression model existing between ozone and temperature. </p>
+
+<p>To predict the level of ozone the user can select a temperature on the left hand side of the screen. The scatter plot in the center displays the data from the air quality data set in blue and the estimated regression line in orange. </p>
+
+<p>Once a temperature is selected the vertical red line in the chart will move accordingly and the label at the top will display the temperature selected and the estimated level of ozone corresponding on the regression line.</p>
+
+<p>The user can aslo have direct access to the air quality data by consulting the table under the chart.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>2- Calculation applied</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The following code is used by the application to produce the prediction.</p>
+
+<pre><code class="r">##load and format the dataset
+data(airquality);dataMain &lt;- data.frame(na.omit(airquality))
+dataMain &lt;- dataMain[,c(&#39;Ozone&#39;,&#39;Temp&#39;)]
+## calculate the regression model from the data and evaluate outcome with predictor at 80
+temp &lt;-80;reg &lt;- lm(Ozone ~ Temp,dataMain)
+pred &lt;- predict(reg,newdata = data.frame(Temp=temp))
+</code></pre>
+
+<p>The estimated level of ozone for a temperature of 80 is 47.4827.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>3- Displayed result</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Once the calculation is completed the results are displayed in the following graph:</p>
+
+<pre><code class="r">plot(x=dataMain$Temp,y=dataMain$Ozone,pch = 16, cex = .9,col=&#39;blue&#39;, xlab=&#39;Temperature&#39;,ylab = &#39;Ozone level&#39;);abline(reg, col=&#39;orange&#39;);lines(c(temp, temp), c(-10, 200),col=&quot;red&quot;,lwd=2);text(80-6, 150, paste(&quot;Temperature = &quot;, temp));text(80-10, 140, paste(&quot;Predicted Ozone level = &quot;, round(pred, 2)))
+</code></pre>
+
+<p><img src="assets/fig/chart.png" alt="plot of chunk chart"> </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Ozone level Predictor'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='1 - Application purpose and user guidelines'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='2- Calculation applied'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='3- Displayed result'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
